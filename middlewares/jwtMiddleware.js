@@ -1,8 +1,8 @@
 const jwt = require('jsonwebtoken');
 const JWT_SECRET = process.env.JWT_SECRET; 
 
-const generateToken = (userId) => {
-  return jwt.sign({ userId }, JWT_SECRET, { expiresIn: '60d' });
+const generateToken = (userUuid) => {
+  return jwt.sign({ userUuid }, JWT_SECRET, { expiresIn: '60d' });
 };
 
 const verifyToken = (token) => {
@@ -16,7 +16,7 @@ const authenticateToken = (req, res, next) => {
       const token = authHeader.split(' ')[1]; 
       try {
           const decoded = verifyToken(token);
-          req.userId = decoded.userId;
+          req.userUuid = decoded.userUuid;
           next();
       } catch (error) {
           console.error(error);

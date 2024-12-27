@@ -27,3 +27,4 @@
 {"level":"error","message":"400 - Invalid email format - /auth/register - POST - ::ffff:127.0.0.1"}
 {"level":"error","message":"404 - User not found - /auth/login - POST - ::ffff:127.0.0.1"}
 {"level":"error","message":"404 - User not found - /auth/login - POST - ::ffff:127.0.0.1"}
+{"level":"error","message":"404 - User not found - /auth/login - POST - ::1"}

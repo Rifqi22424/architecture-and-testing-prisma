@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql" // Bisa disesuaikan: mysql, sqlite, dsb.
+  provider = "mysql" 
   url      = env("DATABASE_URL")
 }
 
