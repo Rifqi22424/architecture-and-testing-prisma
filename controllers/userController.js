@@ -1,49 +1,64 @@
-const userService = require('../services/userService');
+const userService = require("../services/userService");
 
-const getAllUsers = async (req, res) => {
+// Get All Users
+const getAllUsers = async (req, res, next) => {
   try {
     const users = await userService.getAllUsers();
-    res.status(200).json(users);
+    res.status(200).json({ message: "get all users success", data: users });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 };
 
-const getUserById = async (req, res) => {
+// Get User by UUID
+const getUserByUuid = async (req, res, next) => {
   try {
-    const user = await userService.getUserById(req.params.id);
-    if (!user) return res.status(404).json({ message: 'User not found' });
-    res.status(200).json(user);
+    const { uuid } = req.params;
+    const user = await userService.getUserByUuid(uuid);
+    res.status(200).json({ message: "get user by uuid success", user });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 };
 
-const createUser = async (req, res) => {
+// Update User
+const updateUser = async (req, res, next) => {
   try {
-    const user = await userService.createUser(req.body);
-    res.status(201).json(user);
+    const { uuid } = req.params;
+    const { name, email } = req.body;
+    const updatedUser = await userService.updateUser(uuid, { name, email });
+    res.status(200).json({ message: "update user success", data: updatedUser });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 };
 
-const updateUser = async (req, res) => {
+// Soft Delete User
+const softDeleteUser = async (req, res, next) => {
   try {
-    const user = await userService.updateUser(req.params.id, req.body);
-    res.status(200).json(user);
+    const { uuid } = req.params;
+    const result = await userService.softDeleteUser(uuid);
+    res.status(200).json({ message: "soft delete success" });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 };
 
-const deleteUser = async (req, res) => {
+// Hard Delete User
+const hardDeleteUser = async (req, res, next) => {
   try {
-    await userService.deleteUser(req.params.id);
-    res.status(204).send();
+    const { uuid } = req.params;
+    const result = await userService.hardDeleteUser(uuid);
+    res.status(200).json({ message: "hard delete success" });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 };
 
-module.exports = { getAllUsers, getUserById, createUser, updateUser, deleteUser };
+module.exports = {
+  getAllUsers,
+  getUserByUuid,
+  updateUser,
+  softDeleteUser,
+  hardDeleteUser,
+};
